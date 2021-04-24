@@ -2,6 +2,7 @@
 
 import inspect
 from pathlib import Path
+import matplotlib.pyplot as plt
 import pandas as pd
 
 
@@ -31,6 +32,8 @@ def main():
         nowcasting_ger.tail(nowcasting_ger.shape[0] - n[0]).index, inplace=True
     )
 
+    x = nowcasting_ger.plot.line(x='Datum', y="Schätzer_7_Tage_R_Wert")
+    plt.show()
     cleaned_temps_file = this_file.parent.parent / Path(
         "data/in/Temp_Germany2020_cleaned.csv"
     )
@@ -49,11 +52,15 @@ def main():
     temp_mean = temp_ger.groupby("time").mean()
     temp_mean.reset_index(inplace=True)
 
+    x = temp_mean.plot.line(x='time', y="tg")
+    plt.show()
     # temp_now = nowcasting_ger.merge(temp_ger, on="", how="left")
 
     tmp_nowcasted_mergeed = pd.merge(
         temp_mean, nowcasting_ger, how="inner", left_on=["time"], right_on=["Datum"]
     )
+    x = tmp_nowcasted_mergeed.plot.line(x='Datum', y={"Schätzer_7_Tage_R_Wert", "tg"})
+    plt.show()
     # tmp_nowcasted_mergeed.dropna(inplace=True)
 
     print("Foo!")
