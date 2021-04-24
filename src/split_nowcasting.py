@@ -1,6 +1,16 @@
+#!/usr/bin/env python3
+
 import inspect
 from pathlib import Path
 import pandas as pd
+
+
+def read_floats_setting_dots_to_NaN(val):
+    if val == ".":
+        return float("nan")
+    if val == "":
+        return None
+    return float(val.replace(",", "."))
 
 
 def main():
@@ -10,7 +20,11 @@ def main():
         "data/in/Nowcasting_Zahlen_csv.csv"
     )
     nowcasting_ger = pd.read_csv(
-        nowcasting_fname, sep=";", decimal=",", error_bad_lines=False
+        nowcasting_fname,
+        sep=";",
+        decimal=",",
+        error_bad_lines=False,
+        converters={"Schätzer_7_Tage_R_Wert": read_floats_setting_dots_to_NaN},
     )
     n = nowcasting_ger.index[nowcasting_ger["Datum"] == "Erläuterung"]
     nowcasting_ger.drop(
