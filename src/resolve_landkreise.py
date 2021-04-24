@@ -65,16 +65,16 @@ def get_geo_data(lk: str):
         "Berlin Marzahn-Hellersdorf",
         "Berlin Lichtenberg",
         "Berlin Reinickendorf",
+        "Hamburg",
     }:
-        lk_no_prefix = "Berlin"
+        # lk_no_prefix = "Berlin"
         return (
             str(
                 requests.get(
-                    base_request.replace("county", "city")
-                    % lk_no_prefix.replace(" ", "+")
+                    base_request.replace("county", "q") % lk_no_prefix.replace(" ", "+")
                 ).content
             ),
-            base_request.replace("county", "city") % lk_no_prefix.replace(" ", "+"),
+            base_request.replace("county", "q") % lk_no_prefix.replace(" ", "+"),
         )
     return (
         str(requests.get(base_request % lk_no_prefix.replace(" ", "+")).content),
